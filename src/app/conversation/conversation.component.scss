@@ -1,0 +1,25 @@
+@import "../../assets/styles/variables";
+
+.conversation-conatiner {
+  height: 100%;
+
+  .conversation-divider {
+    border-top-color: $border;
+  }
+
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+  .active {
+    background-color: $background-dark;
+  }
+
+  .conversation {
+    cursor: pointer;
+  }
+
+  .side-header {
+    background-color: $background-dark;
+  }
+}

@@ -1,0 +1,17 @@
+@import "../../assets/styles/variables";
+
+.users-conatiner {
+  height: 100%;
+
+  .conversation-divider {
+    border-top-color: $border;
+  }
+
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+  .side-header {
+    background-color: $background-dark;
+  }
+}

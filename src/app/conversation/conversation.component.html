@@ -1,0 +1,26 @@
+<div class="conversation-conatiner" fxLayout="column" fxLayoutAlign="start stretch">
+  <div>
+    <mat-toolbar class="side-header">
+      <span>Conversatoions</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button aria-label="Example icon-button with share icon">
+        <mat-icon (click)="add()">add</mat-icon>
+      </button>
+    </mat-toolbar>
+    <mat-divider class="conversation-divider"></mat-divider>
+  </div>
+  <div class="overflow-v">
+    <mat-list>
+      <mat-list-item class="conversation" (click)="change(i)" [ngClass]="{'active' : activeIndex==i}"
+        *ngFor="let message of conversations; let i = index">
+        <img matListAvatar src="https://picsum.photos/200" alt="...">
+        <h3 matLine> {{message.username}} </h3>
+        <p matLine>
+          <span> {{message.subject}} </span>
+        </p>
+        <mat-divider class="conversation-divider"></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+</div>

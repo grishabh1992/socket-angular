@@ -1,0 +1,28 @@
+<div class="messages" fxLayout="column" fxLayoutAlign="space-between stretch">
+  <div>
+    <mat-toolbar class="side-header">
+      <span>Jon</span>
+      <span class="example-spacer"></span>
+    </mat-toolbar>
+    <mat-divider class="conversation-divider"></mat-divider>
+  </div>
+  <div class="overflow-v">
+    <mat-list class="old-message overflow-v">
+      <mat-list-item class="message" *ngFor="let message of messages">
+        <img matListAvatar src="https://picsum.photos/200" alt="...">
+        <!-- <h3 matLine> {{message.username}} </h3> -->
+        <p matLine>
+          <span> {{message.subject}} </span>
+        </p>
+      </mat-list-item>
+    </mat-list>
+    <mat-list>
+      <mat-list-item class="comment">
+        <img matListAvatar src="https://picsum.photos/200" alt="...">
+        <mat-form-field matLine class="example-full-width">
+          <textarea matInput placeholder="Message"></textarea>
+        </mat-form-field>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="users-conatiner" fxLayout="column" fxLayoutAlign="start stretch">
+  <div>
+    <mat-toolbar class="side-header">
+      <span>Start New Conversatoions</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button aria-label="Example icon-button with share icon">
+        <mat-icon (click)="close()">clear</mat-icon>
+      </button>
+    </mat-toolbar>
+    <mat-divider class="conversation-divider"></mat-divider>
+  </div>
+  <div class="overflow-v">
+    <mat-list>
+      <mat-list-item (click)="selectUser(message)" *ngFor="let message of users">
+        <img matListAvatar src="https://picsum.photos/200" alt="...">
+        <h3 matLine> {{message.username}} </h3>
+        <!-- <p matLine>
+        <span> {{message.subject}} </span>
+      </p> -->
+        <mat-divider class="conversation-divider"></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

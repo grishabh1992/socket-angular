@@ -1,0 +1,12 @@
+@import "../../assets/styles/variables";
+.dashboard-wrapper {
+  height: 100%;
+  .users-wrapper {
+    background-color: $background-light;
+
+  }
+  .section-divider {
+    border-right-color: $border;
+    border-right-width: 2px;
+  }
+}

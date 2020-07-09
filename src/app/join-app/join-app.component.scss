@@ -1,0 +1,15 @@
+@import "../../assets/styles/variables";
+.join-wrapper {
+  height: 100%;
+
+  div {
+    border: 3px solid $border;
+    padding: 3rem 2rem;
+    background: $background-dark;
+
+    .example-form {
+      margin-bottom: 1rem;
+      ;
+    }
+  }
+}

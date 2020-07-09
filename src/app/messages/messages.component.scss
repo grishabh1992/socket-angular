@@ -1,0 +1,25 @@
+@import "../../assets/styles/variables";
+
+.messages {
+  height: 100%;
+
+  .side-header {
+    background-color: $background-dark;
+  }
+
+  .conversation-divider {
+    border-top-color: $border;
+  }
+
+  .old-message {
+    height: calc(100% - 92px);
+
+    .message {
+      background-color: $background-very-light;
+    }
+  }
+
+  .comment {
+    margin: 1.25rem 0px 1rem;
+  }
+}
