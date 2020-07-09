@@ -10,6 +10,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsersComponent } from './users/users.component';
 import { ConversationComponent } from './conversation/conversation.component';
 import { MessagesComponent } from './messages/messages.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SocketService } from './socket.service';
 
 @NgModule({
   declarations: [
@@ -25,9 +27,13 @@ import { MessagesComponent } from './messages/messages.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    SocketService
+  ],
   bootstrap: [AppComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { SocketService } from '../socket.service';
 
 @Component({
   selector: 'app-conversation',
@@ -9,7 +10,7 @@ export class ConversationComponent implements OnInit {
   @Input() conversations;
   @Output() action = new EventEmitter();
   activeIndex = 0;
-  constructor() { }
+  constructor(private socketService : SocketService) { }
 
   ngOnInit() {
   }
@@ -20,6 +21,7 @@ export class ConversationComponent implements OnInit {
 
   change(index) {
     this.activeIndex = index;
+    this.socketService.joinRoom('HI');
   }
 
 }

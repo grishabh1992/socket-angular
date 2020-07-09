@@ -20,7 +20,7 @@
       <mat-list-item class="comment">
         <img matListAvatar src="https://picsum.photos/200" alt="...">
         <mat-form-field matLine class="example-full-width">
-          <textarea matInput placeholder="Message"></textarea>
+          <textarea [(ngModel)]="text" (submit)="sendMessage(text)" matInput placeholder="Message"></textarea>
         </mat-form-field>
       </mat-list-item>
     </mat-list>
