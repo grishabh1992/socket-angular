@@ -10,13 +10,31 @@
     <mat-divider class="conversation-divider"></mat-divider>
   </div>
   <div class="overflow-v">
-    <mat-list>
+    <div class="group-des" *ngIf="isGroup">
+      <mat-form-field>
+        <mat-label>Group Name</mat-label>
+        <input [(ngModel)]="groupName" matInput placeholder="Ex. Group Name">
+      </mat-form-field>
+    </div>
+    <mat-selection-list *ngIf="isGroup">
+      <mat-list-option *ngFor="let message of users">
+        <img matListAvatar src="https://picsum.photos/200" alt="...">
+        <h3 matLine> {{message.username}} </h3>
+        <mat-divider class="conversation-divider"></mat-divider>
+      </mat-list-option>
+    </mat-selection-list>
+    <div class="group-save" *ngIf="isGroup">
+      <button (click)="createGroup()" mat-button color="primary">Join</button>
+    </div>
+    <mat-list *ngIf="!isGroup">
+      <mat-list-item (click)="navigateToCreateGroup()">
+        <img matListAvatar src="../../assets/images/group.jpg" alt="...">
+        <h3 matLine> Create Group </h3>
+        <mat-divider class="conversation-divider"></mat-divider>
+      </mat-list-item>
       <mat-list-item (click)="selectUser(message)" *ngFor="let message of users">
         <img matListAvatar src="https://picsum.photos/200" alt="...">
         <h3 matLine> {{message.username}} </h3>
-        <!-- <p matLine>
-        <span> {{message.subject}} </span>
-      </p> -->
         <mat-divider class="conversation-divider"></mat-divider>
       </mat-list-item>
     </mat-list>

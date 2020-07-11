@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { APIService } from '../api.service';
 
 @Component({
   selector: 'app-users',
@@ -6,12 +7,19 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
-  @Input() users;
   @Output() select = new EventEmitter();
   @Output() action = new EventEmitter();
-  constructor() { }
+  users: any;
+  isGroup: boolean;
+  groupName: string;
+  constructor(
+    private api: APIService
+  ) { }
 
   ngOnInit() {
+    this.api.listUsers({}).subscribe((data) => {
+      this.users = data;
+    })
   }
 
   close() {
@@ -20,5 +28,13 @@ export class UsersComponent implements OnInit {
 
   selectUser(user) {
     this.select.emit(user);
+  }
+
+  navigateToCreateGroup() {
+    this.isGroup = true;
+  }
+
+  createGroup() {
+
   }
 }

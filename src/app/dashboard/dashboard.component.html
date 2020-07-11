@@ -1,5 +1,5 @@
 <div class="dashboard-wrapper" fxLayout="row" fxLayoutAlign="start stretch">
-  <div fxFlex="30" class="users-wrapper">
+  <div fxFlex="35" class="users-wrapper">
     <app-conversation *ngIf="!isNewConversation" (action)="isNewConversation=true" [conversations]="messages">
     </app-conversation>
     <app-users *ngIf="isNewConversation" (action)="isNewConversation=false" (select)="startNewConversation($event)"

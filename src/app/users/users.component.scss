@@ -3,6 +3,17 @@
 .users-conatiner {
   height: 100%;
 
+  .group-des {
+    padding: 1rem;
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+  .group-save {
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+
   .conversation-divider {
     border-top-color: $border;
   }

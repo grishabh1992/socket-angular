@@ -12,6 +12,8 @@ import { ConversationComponent } from './conversation/conversation.component';
 import { MessagesComponent } from './messages/messages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SocketService } from './socket.service';
+import { HttpClientModule } from '@angular/common/http';
+import { APIService } from './api.service';
 
 @NgModule({
   declarations: [
@@ -30,9 +32,11 @@ import { SocketService } from './socket.service';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [
-    SocketService
+    SocketService,
+    APIService
   ],
   bootstrap: [AppComponent],
   schemas: [
