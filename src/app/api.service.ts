@@ -1,8 +1,10 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
+import { Conversation } from './model';
+import { Observable } from 'rxjs';
 export interface Request {
   body?: any,
-  parms?: any
+  params?: any
 }
 const API = 'http://localhost:3000/';
 
@@ -23,6 +25,10 @@ export class APIService {
   }
 
   initiateConversation(request: Request) {
-    return this.http.post(`${API}user`, request.body);
+    return this.http.post(`${API}conversation`, request.body);
+  }
+
+  conversations(request: Request ) {
+    return this.http.get(`${API}conversation`, request);
   }
 }

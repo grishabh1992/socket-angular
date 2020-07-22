@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { APIService } from '../api.service';
+import { Conversation } from '../model';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,76 +11,17 @@ export class DashboardComponent implements OnInit {
   messages = [];
   users = [];
   isNewConversation = false;
-  constructor() { }
+  constructor(private api: APIService) { }
 
   ngOnInit() {
-    this.messages = [
-      {
-        username : 'Jon',
-        subject: 'hihihi'
-
-      }, {
-        username : 'Rahul',
-        subject : 'Hay whats up?'
-      },
-      {
-        username : 'Jon',
-        subject: 'hihihi'
-
-      }, {
-        username : 'Rahul',
-        subject : 'Hay whats up?'
-      },
-      {
-        username : 'Jon',
-        subject: 'hihihi'
-
-      }, {
-        username : 'Rahul',
-        subject : 'Hay whats up?'
-      },
-      {
-        username : 'Jon',
-        subject: 'hihihi'
-
-      }, {
-        username : 'Rahul',
-        subject : 'Hay whats up?'
-      },
-      {
-        username : 'Jon',
-        subject: 'hihihi'
-
-      }, {
-        username : 'Rahul',
-        subject : 'Hay whats up?'
-      },
-      {
-        username : 'Jon',
-        subject: 'hihihi'
-
-      }, {
-        username : 'Rahul',
-        subject : 'Hay whats up?'
-      }
-    ];
-    this.users = [
-      {
-        username : 'Jon',
-        subject: 'hihihi'
-
-      }, {
-        username : 'Rahul',
-        subject : 'Hay whats up?'
-      }
-    ]
+    this.api.conversations({ params: { nested: { members: true } } }).subscribe((reponse: any) => {
+      this.messages = reponse.data;
+    })
   }
 
-  startNewConversation(user){
-    console.log(user);
+  async startNewConversation(conversation: Conversation) {
+    this.api.initiateConversation({ body: conversation }).subscribe();
     this.isNewConversation = false;
   }
-
-
 
 }

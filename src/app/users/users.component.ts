@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { APIService } from '../api.service';
+import { Conversation, User } from '../model';
+import { MatListOption } from '@angular/material/list';
 
 @Component({
   selector: 'app-users',
@@ -17,8 +19,8 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.api.listUsers({}).subscribe((data) => {
-      this.users = data;
+    this.api.listUsers({}).subscribe((userPayload: any) => {
+      this.users = userPayload.data;
     })
   }
 
@@ -26,15 +28,23 @@ export class UsersComponent implements OnInit {
     this.action.emit('close');
   }
 
-  selectUser(user) {
-    this.select.emit(user);
+  selectUser(user: User) {
+    const conversation: Conversation = {
+      members: [user._id]
+    }
+    this.select.emit(conversation);
   }
 
   navigateToCreateGroup() {
     this.isGroup = true;
   }
 
-  createGroup() {
-
+  createGroup(selectedUser: MatListOption[]) {
+    const conversation: Conversation = {
+      groupName: this.groupName,
+      members: selectedUser.map((user) => user.value._id)
+    }
+    this.select.emit(conversation);
+    this.groupName = '';
   }
 }
