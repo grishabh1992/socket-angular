@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   constructor(private api: APIService) { }
 
   ngOnInit() {
-    this.api.conversations({ params: { nested: { members: true } } }).subscribe((reponse: any) => {
+    this.api.conversations({ params : {nested :JSON.stringify({members: true} ) }}).subscribe((reponse: any) => {
       this.messages = reponse.data;
     })
   }
