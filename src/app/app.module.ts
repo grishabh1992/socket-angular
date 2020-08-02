@@ -11,9 +11,10 @@ import { UsersComponent } from './users/users.component';
 import { ConversationComponent } from './conversation/conversation.component';
 import { MessagesComponent } from './messages/messages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SocketService } from './socket.service';
+import { SocketService } from './services/socket.service';
 import { HttpClientModule } from '@angular/common/http';
-import { APIService } from './api.service';
+import { APIService } from './services/api.service';
+import { StorageService } from './services/storage.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { APIService } from './api.service';
   ],
   providers: [
     SocketService,
-    APIService
+    APIService,
+    StorageService,
   ],
   bootstrap: [AppComponent],
   schemas: [

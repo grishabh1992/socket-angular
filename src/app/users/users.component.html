@@ -19,7 +19,7 @@
       </div>
       <mat-selection-list #groupusers>
         <mat-list-option [value]="user" *ngFor="let user of users">
-          <img matListAvatar src="https://picsum.photos/200" alt="...">
+          <img matListAvatar src="../../assets/images/user.png" alt="...">
           <h3 matLine> {{user.username}} </h3>
           <mat-divider class="conversation-divider"></mat-divider>
         </mat-list-option>
@@ -35,7 +35,7 @@
         <mat-divider class="conversation-divider"></mat-divider>
       </mat-list-item>
       <mat-list-item (click)="selectUser(user)" *ngFor="let user of users">
-        <img matListAvatar src="https://picsum.photos/200" alt="...">
+        <img matListAvatar src="../../assets/images/user.png" alt="...">
         <h3 matLine> {{user.username}} </h3>
         <mat-divider class="conversation-divider"></mat-divider>
       </mat-list-item>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { APIService } from '../api.service';
+import { APIService } from '../services/api.service';
 import { Conversation, User } from '../model';
 import { MatListOption } from '@angular/material/list';
 
@@ -42,6 +42,7 @@ export class UsersComponent implements OnInit {
   createGroup(selectedUser: MatListOption[]) {
     const conversation: Conversation = {
       groupName: this.groupName,
+      isGroup : true,
       members: selectedUser.map((user) => user.value._id)
     }
     this.select.emit(conversation);

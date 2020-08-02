@@ -1,7 +1,15 @@
 export interface User {
-  fullName?: string;
+  username?: string;
   gender?: string;
-  schoolName?: string;
+  _id?: string;
+}
+
+export interface Message {
+  sender?: User | string;
+  messageText?: string;
+  createdAt?: Date;
+  conversationId?: Conversation | string;
+  members?: User[] | string[];
   _id?: string;
 }
 
@@ -11,4 +19,8 @@ export interface Conversation {
   _id?: string;
   isGroup?: boolean;
   groupName?: string;
+}
+
+export interface ConversationMessages extends Conversation{
+  messages : Message[]
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService } from '../api.service';
+import { APIService } from '../services/api.service';
 import { Conversation } from '../model';
 
 @Component({
@@ -14,14 +14,20 @@ export class DashboardComponent implements OnInit {
   constructor(private api: APIService) { }
 
   ngOnInit() {
-    this.api.conversations({ params : {nested :JSON.stringify({members: true} ) }}).subscribe((reponse: any) => {
+    this.getConversations();
+  }
+
+  getConversations() {
+    this.api.conversations({ params: { ref : JSON.stringify(['members']) } }).subscribe((reponse: any) => {
       this.messages = reponse.data;
-    })
+    });
+
   }
 
   async startNewConversation(conversation: Conversation) {
     this.api.initiateConversation({ body: conversation }).subscribe();
     this.isNewConversation = false;
+    this.getConversations();
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { APIService } from '../api.service';
+import { APIService } from '../services/api.service';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-join-app',
@@ -12,6 +13,7 @@ export class JoinAppComponent implements OnInit {
   constructor(
     private router: Router,
     private api: APIService,
+    private storage : StorageService,
   ) { }
 
   ngOnInit() {
@@ -19,7 +21,9 @@ export class JoinAppComponent implements OnInit {
 
   join() {
     if (this.username) {
-      this.api.joinApp({ body: { username: this.username } }).subscribe((data) => {
+      this.api.joinApp({ body: { username: this.username } }).subscribe((data : any) => {
+        console.log(data);
+        this.storage.setLoggedUser(data.data);
         this.router.navigate(['/dashboard']);
       });
     }

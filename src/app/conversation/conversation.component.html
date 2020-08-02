@@ -12,11 +12,11 @@
   <div class="overflow-v">
     <mat-list>
       <mat-list-item class="conversation" (click)="change(i)" [ngClass]="{'active' : activeIndex==i}"
-        *ngFor="let message of conversations; let i = index">
-        <img matListAvatar src="https://picsum.photos/200" alt="...">
-        <h3 matLine> {{message.username}} </h3>
+        *ngFor="let conversation of conversations; let i = index">
+        <img matListAvatar [src]="conversation.isGroup ? '../../assets/images/group.jpg' : '../../assets/images/user.png'" alt="...">
+        <h3 matLine> {{!conversation.isGroup ? getReceipt(conversation)?.username : conversation.groupName}} </h3>
         <p matLine>
-          <span> {{message.subject}} </span>
+          <span> {{conversation.subject}} </span>
         </p>
         <mat-divider class="conversation-divider"></mat-divider>
       </mat-list-item>
