@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from '../services/api.service';
-import { Conversation } from '../model';
+import { Conversation, ConversationMessages } from '../model';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,7 +8,8 @@ import { Conversation } from '../model';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  messages = [];
+  conversations = [];
+  conversationMessages : ConversationMessages;
   users = [];
   isNewConversation = false;
   constructor(private api: APIService) { }
@@ -18,8 +19,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getConversations() {
-    this.api.conversations({ params: { ref : JSON.stringify(['members']) } }).subscribe((reponse: any) => {
-      this.messages = reponse.data;
+    this.api.conversations({ params: { ref: JSON.stringify(['members']) } }).subscribe((reponse: any) => {
+      this.conversations = reponse.data;
     });
 
   }
@@ -28,6 +29,13 @@ export class DashboardComponent implements OnInit {
     this.api.initiateConversation({ body: conversation }).subscribe();
     this.isNewConversation = false;
     this.getConversations();
+  }
+
+  async startConversation(conversation: Conversation) {
+    this.api.messages({ params: conversation }).subscribe((response: any) => {
+      console.log(response);
+      this.conversationMessages = response.data[0];
+    });
   }
 
 }

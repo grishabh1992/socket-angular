@@ -1,24 +1,27 @@
 <div class="messages" fxLayout="column" fxLayoutAlign="space-between stretch">
   <div>
     <mat-toolbar class="side-header">
-      <span>Jon</span>
+      <span>{{conversationMessages?.isGroup ? conversationMessages.groupName : other?.username}}</span>
       <span class="example-spacer"></span>
+      <button mat-icon-button aria-label="Example icon-button with share icon">
+        <mat-icon (click)="logout()">exit_to_app</mat-icon>
+      </button>
     </mat-toolbar>
     <mat-divider class="conversation-divider"></mat-divider>
   </div>
   <div class="overflow-v">
     <mat-list class="old-message overflow-v">
-      <mat-list-item class="message" *ngFor="let message of messages">
-        <img matListAvatar src="https://picsum.photos/200" alt="...">
+      <mat-list-item class="message" *ngFor="let message of conversationMessages?.messages">
+        <img matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'" alt="...">
         <!-- <h3 matLine> {{message.username}} </h3> -->
         <p matLine>
-          <span> {{message.subject}} </span>
+          <span> {{message.messageText}} </span>
         </p>
       </mat-list-item>
     </mat-list>
     <mat-list>
       <mat-list-item class="comment">
-        <img matListAvatar src="https://picsum.photos/200" alt="...">
+        <img matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'" alt="...">
         <mat-form-field matLine class="example-full-width">
           <textarea [(ngModel)]="text" (submit)="sendMessage(text)" matInput placeholder="Message"></textarea>
         </mat-form-field>

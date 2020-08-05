@@ -1,12 +1,13 @@
 <div class="dashboard-wrapper" fxLayout="row" fxLayoutAlign="start stretch">
   <div fxFlex="35" class="users-wrapper">
-    <app-conversation *ngIf="!isNewConversation" (action)="isNewConversation=true" [conversations]="messages">
+    <app-conversation *ngIf="!isNewConversation" (action)="isNewConversation=true" (select)="startConversation($event)"
+      [conversations]="conversations">
     </app-conversation>
-    <app-users *ngIf="isNewConversation" (action)="isNewConversation=false" (select)="startNewConversation($event)"
-      [users]="messages"></app-users>
+    <app-users *ngIf="isNewConversation" (action)="isNewConversation=false" (select)="startNewConversation($event)">
+    </app-users>
   </div>
   <mat-divider class="section-divider" [vertical]="true"></mat-divider>
   <div fxFlex class="message-wrapper">
-    <app-messages [messages]="messages"></app-messages>
+    <app-messages [conversationMessages]="conversationMessages"></app-messages>
   </div>
 </div>

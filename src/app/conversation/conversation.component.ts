@@ -9,8 +9,20 @@ import { StorageService } from '../services/storage.service';
   styleUrls: ['./conversation.component.scss']
 })
 export class ConversationComponent implements OnInit {
-  @Input() conversations: Conversation;
+  private _conversations: Conversation[];
+  @Input()
+  set conversations(conversation: Conversation[]) {
+    if (conversation  && conversation.length) {
+      console.log(conversation);
+      this._conversations = conversation;
+      this.change(0, conversation[0]);
+    }
+  }
+  get conversations(): Conversation[] {
+    return this._conversations;
+  }
   @Output() action = new EventEmitter();
+  @Output() select = new EventEmitter();
   activeIndex = 0;
   constructor(private socketService: SocketService,
     private storage: StorageService) { }
@@ -22,9 +34,10 @@ export class ConversationComponent implements OnInit {
     this.action.emit('close');
   }
 
-  change(index) {
+  change(index: number, conversation: Conversation) {
     this.activeIndex = index;
-    this.socketService.joinRoom('HI');
+    this.socketService.joinRoom(conversation._id);
+    this.select.emit(conversation);
   }
 
   getReceipt(conversation: Conversation) {

@@ -2,6 +2,7 @@ export interface User {
   username?: string;
   gender?: string;
   _id?: string;
+  profile?: string;
 }
 
 export interface Message {
@@ -21,6 +22,6 @@ export interface Conversation {
   groupName?: string;
 }
 
-export interface ConversationMessages extends Conversation{
-  messages : Message[]
+export interface ConversationMessages extends Conversation {
+  messages: Message[]
 }

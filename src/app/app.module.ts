@@ -12,9 +12,11 @@ import { ConversationComponent } from './conversation/conversation.component';
 import { MessagesComponent } from './messages/messages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SocketService } from './services/socket.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIService } from './services/api.service';
 import { StorageService } from './services/storage.service';
+import { RequestInterceptor } from './services/request.interceptor';
+import { ResponseInterceptor } from './services/response.interceptor';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,15 @@ import { StorageService } from './services/storage.service';
     SocketService,
     APIService,
     StorageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestInterceptor,
+      multi: true
+    }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
   schemas: [

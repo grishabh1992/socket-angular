@@ -33,6 +33,6 @@ export class APIService {
   }
 
   messages(request: Request ) {
-    return this.http.get(`${API}message`, request);
+    return this.http.get(`${API}message/${request.params._id}`, request);
   }
 }

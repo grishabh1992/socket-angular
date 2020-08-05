@@ -6,6 +6,10 @@ export class StorageService {
   constructor() {
   }
 
+  clearAll () {
+    localStorage.clear();
+  }
+
   setLoggedUser(info) {
     localStorage.setItem('loggedIn', JSON.stringify(info));
   }
