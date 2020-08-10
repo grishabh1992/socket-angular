@@ -9,7 +9,7 @@ export interface Message {
   sender?: User | string;
   messageText?: string;
   createdAt?: Date;
-  conversationId?: Conversation | string;
+  conversation?: Conversation | string;
   members?: User[] | string[];
   _id?: string;
 }

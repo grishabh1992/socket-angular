@@ -13,13 +13,13 @@ import { SocketService } from '../services/socket.service';
 export class MessagesComponent implements OnInit {
   private conversationId: string;
   _conversationMessages: ConversationMessages;
-  other : User;
-  me : User;
+  other: User;
+  me: User;
   @Input()
   set conversationMessages(conversation: ConversationMessages) {
     this._conversationMessages = conversation;
     this.me = this.storage.getLoggedUser();
-    if(conversation && !conversation.isGroup) {
+    if (conversation && !conversation.isGroup) {
       this.other = (conversation.members as User[]).filter((user: User) => user._id !== this.me._id)[0];
 
     }
@@ -41,7 +41,7 @@ export class MessagesComponent implements OnInit {
   text: string;
   constructor(private api: APIService,
     private router: Router,
-    private socket : SocketService,
+    private socket: SocketService,
     private storage: StorageService) { }
 
   ngOnInit() {
@@ -49,7 +49,12 @@ export class MessagesComponent implements OnInit {
   }
 
   sendMessage(text) {
-    // this.socket
+    this.socket.sendMessage({
+      messageText: text,
+      sender: this.me._id,
+      conversation: this.conversation._id,
+      members: this.conversation.members,
+    });
   }
 
   logout() {

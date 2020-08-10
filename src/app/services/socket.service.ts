@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import * as io from 'socket.io-client';
 import { StorageService } from './storage.service';
-const token = '123456789';
+import { Message } from '../model';
+
 @Injectable({ providedIn: 'root' })
 export class SocketService {
   private socket: SocketIOClient.Socket;
@@ -16,6 +17,10 @@ export class SocketService {
 
   joinRoom(roomName) {
     this.socket.emit('join', { roomName });
+  }
+
+  sendMessage(message: Message) {
+    this.socket.emit('message', message);
   }
 
 }
