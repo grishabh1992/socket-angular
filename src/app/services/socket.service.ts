@@ -23,4 +23,8 @@ export class SocketService {
     this.socket.emit('message', message);
   }
 
+  receiveMessage(callback) {
+    this.socket.on('message', callback);
+  }
+
 }

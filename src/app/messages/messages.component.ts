@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ConversationMessages, User } from '../model';
+import { ConversationMessages, User, Message } from '../model';
 import { APIService } from '../services/api.service';
 import { StorageService } from '../services/storage.service';
 import { Router } from '@angular/router';
@@ -24,19 +24,9 @@ export class MessagesComponent implements OnInit {
 
     }
   }
-  get conversation(): ConversationMessages {
+  get conversationMessages(): ConversationMessages {
     return this._conversationMessages;
   }
-  // @Input()
-  // set conversation(conversationId: string) {
-  //   this.conversationId = conversationId;
-  //   this.api.messages({ params: { ref: JSON.stringify(['members', 'sender']) } }).subscribe((reponse: any) => {
-  //     this.conversationMessages = reponse.data;
-  //   });
-  // }
-  // get conversation(): string {
-  //   return this.conversationId;
-  // }
 
   text: string;
   constructor(private api: APIService,
@@ -46,14 +36,18 @@ export class MessagesComponent implements OnInit {
 
   ngOnInit() {
     this.me = this.storage.getLoggedUser();
+    this.socket.receiveMessage((message : Message) => {
+      this.conversationMessages.messages.push(message);
+      this.text = '';
+    });
   }
 
-  sendMessage(text) {
+  sendMessage() {
     this.socket.sendMessage({
-      messageText: text,
+      messageText: this.text,
       sender: this.me._id,
-      conversation: this.conversation._id,
-      members: this.conversation.members,
+      conversation: this.conversationMessages._id,
+      members: this.conversationMessages.members,
     });
   }
 
