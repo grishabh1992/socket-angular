@@ -13,15 +13,16 @@ import { SocketService } from '../services/socket.service';
 export class MessagesComponent implements OnInit {
   private conversationId: string;
   _conversationMessages: ConversationMessages;
-  other: User;
+  other: { [key: string]: User } = {};
   me: User;
   @Input()
   set conversationMessages(conversation: ConversationMessages) {
-    this._conversationMessages = conversation;
-    this.me = this.storage.getLoggedUser();
-    if (conversation && !conversation.isGroup) {
-      this.other = (conversation.members as User[]).filter((user: User) => user._id !== this.me._id)[0];
-
+    if (conversation) {
+      this._conversationMessages = conversation;
+      this.me = this.storage.getLoggedUser();
+      (conversation.members as User[]).forEach((user: User) => {
+        this.other[user._id] = user;
+      });
     }
   }
   get conversationMessages(): ConversationMessages {
@@ -36,7 +37,7 @@ export class MessagesComponent implements OnInit {
 
   ngOnInit() {
     this.me = this.storage.getLoggedUser();
-    this.socket.receiveMessage((message : Message) => {
+    this.socket.receiveMessage((message: Message) => {
       this.conversationMessages.messages.push(message);
       this.text = '';
     });
