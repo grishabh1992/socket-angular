@@ -14,12 +14,16 @@ export class MessagesComponent implements OnInit {
   private conversationId: string;
   _conversationMessages: ConversationMessages;
   other: { [key: string]: User } = {};
+  receipent : User;
   me: User;
   @Input()
   set conversationMessages(conversation: ConversationMessages) {
     if (conversation) {
       this._conversationMessages = conversation;
       this.me = this.storage.getLoggedUser();
+      this.receipent = (conversation.members as User[]).filter((user: User) => {
+        return this.me._id !== user._id;
+      })[0];
       (conversation.members as User[]).forEach((user: User) => {
         this.other[user._id] = user;
       });
