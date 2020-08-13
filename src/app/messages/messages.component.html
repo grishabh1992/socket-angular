@@ -9,7 +9,7 @@
     </mat-toolbar>
     <mat-divider class="conversation-divider"></mat-divider>
   </div>
-  <div class="overflow-v">
+  <div class="overflow-v" fxLayout="column">
     <mat-list class="old-message overflow-v">
       <mat-list-item class="message" *ngFor="let message of conversationMessages?.messages">
         <img matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'" alt="...">
@@ -19,11 +19,16 @@
         </p>
       </mat-list-item>
     </mat-list>
+    <div *ngIf="typingText" fxLayout="row" class="typing">
+       <span>{{typingText}}</span>
+       <span> <app-typing-indicator></app-typing-indicator></span>
+
+    </div>
     <mat-list>
       <mat-list-item class="comment">
         <img matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'" alt="...">
         <mat-form-field matLine class="example-full-width">
-          <textarea [(ngModel)]="text" (submit)="sendMessage()" matInput placeholder="Message"></textarea>
+          <textarea (keyup)="keyUp($event)" (keydown)="keyDown($event)" [(ngModel)]="text" (submit)="sendMessage()" matInput placeholder="Message"></textarea>
         </mat-form-field>
         <button mat-icon-button aria-label="Example icon-button with share icon">
           <mat-icon (click)="sendMessage()">send</mat-icon>

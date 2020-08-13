@@ -14,8 +14,11 @@ export class MessagesComponent implements OnInit {
   private conversationId: string;
   _conversationMessages: ConversationMessages;
   other: { [key: string]: User } = {};
-  receipent : User;
+  receipent: User;
   me: User;
+  // isTyping: boolean;
+  isTypingObservable;
+  typingText = '';
   @Input()
   set conversationMessages(conversation: ConversationMessages) {
     if (conversation) {
@@ -42,9 +45,34 @@ export class MessagesComponent implements OnInit {
   ngOnInit() {
     this.me = this.storage.getLoggedUser();
     this.socket.receiveMessage((message: Message) => {
+      if (!this.conversationMessages.messages) {
+        this.conversationMessages.messages = [];
+      }
       this.conversationMessages.messages.push(message);
       this.text = '';
     });
+    this.socket.typing((user: User) => {
+      this.typing(user);
+    })
+  }
+
+  keyUp(event) {
+
+  }
+  keyDown(event) {
+    this.socket.startTyping(this.conversationMessages._id)
+  }
+
+  typing(user: User) {
+    if (user && user._id !== this.me._id) {
+      clearTimeout(this.isTypingObservable);
+      console.log('Typing Start');
+      this.typingText = `${user.username} is typing`;
+      this.isTypingObservable = setTimeout(() => {
+        console.log('Typing End');
+        this.typingText = '';
+      }, 800);
+    }
   }
 
   sendMessage() {

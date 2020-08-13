@@ -27,4 +27,13 @@ export class SocketService {
     this.socket.on('message', callback);
   }
 
+
+  typing(callback) {
+    this.socket.on('typing', callback);
+  }
+
+  startTyping(conversation: string) {
+    this.socket.emit('typing', conversation);
+  }
+
 }

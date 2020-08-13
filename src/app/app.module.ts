@@ -17,6 +17,7 @@ import { APIService } from './services/api.service';
 import { StorageService } from './services/storage.service';
 import { RequestInterceptor } from './services/request.interceptor';
 import { ResponseInterceptor } from './services/response.interceptor';
+import { TypingIndicatorComponent } from './typing-indicator/typing-indicator.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ResponseInterceptor } from './services/response.interceptor';
     UsersComponent,
     ConversationComponent,
     MessagesComponent,
+    TypingIndicatorComponent,
   ],
   imports: [
     BrowserModule,
