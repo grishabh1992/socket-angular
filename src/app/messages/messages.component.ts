@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { ConversationMessages, User, Message } from '../model';
 import { APIService } from '../services/api.service';
 import { StorageService } from '../services/storage.service';
@@ -10,15 +10,16 @@ import { SocketService } from '../services/socket.service';
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.scss']
 })
-export class MessagesComponent implements OnInit {
-  private conversationId: string;
+export class MessagesComponent implements OnInit, AfterViewChecked {
   _conversationMessages: ConversationMessages;
   other: { [key: string]: User } = {};
   receipent: User;
   me: User;
-  // isTyping: boolean;
   isTypingObservable;
   typingText = '';
+  keys = {};
+  text: string;
+  @ViewChild('messageBox') messageBox: ElementRef;
   @Input()
   set conversationMessages(conversation: ConversationMessages) {
     if (conversation) {
@@ -36,7 +37,7 @@ export class MessagesComponent implements OnInit {
     return this._conversationMessages;
   }
 
-  text: string;
+
   constructor(private api: APIService,
     private router: Router,
     private socket: SocketService,
@@ -56,11 +57,35 @@ export class MessagesComponent implements OnInit {
     })
   }
 
-  keyUp(event) {
+  ngAfterViewChecked() {
+  }
 
+  keyUp(event: KeyboardEvent) {
+    if (event.key === 'Shift') {
+      event.preventDefault();
+      this.keys['newline'] = false;
+      return false;
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (this.keys['newline']) {
+        this.text = this.text;
+      } else {
+        this.sendMessage();
+      }
+      return false;
+    }
   }
   keyDown(event) {
-    this.socket.startTyping(this.conversationMessages._id)
+    this.socket.startTyping(this.conversationMessages._id);
+    if (event.key === 'Shift') {
+      event.preventDefault();
+      this.keys['newline'] = true;
+      return false;
+    }
+  }
+
+  getFormatText(msg: string) {
+    return msg.replace(/\n/g, '<br/>');
   }
 
   typing(user: User) {
@@ -76,12 +101,14 @@ export class MessagesComponent implements OnInit {
   }
 
   sendMessage() {
-    this.socket.sendMessage({
-      messageText: this.text,
-      sender: this.me._id,
-      conversation: this.conversationMessages._id,
-      members: this.conversationMessages.members,
-    });
+    if (this.text && this.text.trim().length) {
+      this.socket.sendMessage({
+        messageText: this.text.trim(),
+        sender: this.me._id,
+        conversation: this.conversationMessages._id,
+        members: this.conversationMessages.members,
+      });
+    }
   }
 
   logout() {
@@ -90,3 +117,27 @@ export class MessagesComponent implements OnInit {
   }
 
 }
+
+// @HostListener('window:keyup', ['$event'])
+// keyEvent(event: KeyboardEvent) {
+//   if (event.key === 'Shift') {
+//     event.preventDefault();
+//     this.keys['newline'] = false;
+//     return false;
+//   } else if (event.key === 'Enter') {
+//     event.preventDefault();
+//     if (this.keys['newline']) {
+//       this.message = this.message;
+//     } else {
+//       this.send(this.message);
+//     }
+//     return false;
+//   }
+// }
+// @HostListener('window:keydown', ['$event'])
+// keydownEvent(event: KeyboardEvent) {
+//   if (event.key === 'Shift') {
+//     event.preventDefault();
+//     this.keys['newline'] = true;
+//     return false;
+//   }
