@@ -1,0 +1,8 @@
+@import "./variables";
+
+.outer-badge {
+  border: solid 3px $user-badge-outer-border;
+  .inner-badge {
+    border: solid 2px $user-badge-inner-border;
+  }
+}

@@ -2,26 +2,57 @@
 
 .messages {
   height: 100%;
-
+  background-color: $background-very-light;
   .side-header {
     background-color: $background-dark;
+    div {
+      width: 49px;
+      height: 49px;
+      margin-right: 8px;
+      border-radius: 50%;
+      .user-image {
+        width: 44px;
+        height: 45px;
+        border-radius: 50%;
+      }
+    }
   }
 
   .conversation-divider {
     border-top-color: $border;
   }
 
-  .old-message {
-    height: calc(100% - 92px);
+  .messages-list {
+    height: calc(100% - 65px);
+  }
 
+  .old-message {
+    .outer-badge {
+      width: 44px;
+      height: 45px;
+      border-radius: 50%;
+    }
     .message {
-      background-color: $background-very-light;
+      margin: 16px 0px;
+      height: auto;
+      font-size: 18px;
+      &.right {
+        text-align: right;
+        .outer-badge {
+          margin-left: 16px;
+        }
+      }
+      .username {
+        font-weight: 600;
+      }
+      .message-text {
+        font-size: 18px;
+      }
     }
   }
 
   .comment {
     margin: 1.25rem 0px 1rem;
-
   }
 
   .typing {

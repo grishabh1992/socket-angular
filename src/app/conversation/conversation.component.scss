@@ -17,6 +17,23 @@
 
   .conversation {
     cursor: pointer;
+    font-size: 18px;
+    .outer-badge {
+      width: 44px;
+      height: 45px;
+    }
+    .badge {
+      height: 24px;
+      width: 30px;
+      border-radius: 50%;
+      background-color: $user-badge-outer-border;
+      margin: auto;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
   .side-header {

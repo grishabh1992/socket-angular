@@ -1,6 +1,10 @@
 <div class="messages" fxLayout="column" fxLayoutAlign="space-between stretch">
   <div>
     <mat-toolbar class="side-header">
+      <div *ngIf="!conversationMessages?.isGroup"class="outer-badge">
+        <img class="inner-badge user-image"
+          [src]="receipent?.profile ? me?.profile : '../../assets/images/user.png'" alt="...">
+      </div>
       <span>{{conversationMessages?.isGroup ? conversationMessages.groupName : receipent?.username}}</span>
       <span class="example-spacer"></span>
       <button mat-icon-button aria-label="Example icon-button with share icon">
@@ -9,17 +13,27 @@
     </mat-toolbar>
     <mat-divider class="conversation-divider"></mat-divider>
   </div>
-  <div class="overflow-v" fxLayout="column">
-    <mat-list class="old-message overflow-v" #messageBox>
-      <mat-list-item class="message" *ngFor="let message of conversationMessages?.messages">
-        <img matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'" alt="...">
-        <h3 matLine> {{other[message.sender]?.username}} </h3>
-        <p matLine>
-          <span class="message" [innerHtml]="this.getFormatText(message.messageText)">
-          </span>
-        </p>
-      </mat-list-item>
-    </mat-list>
+  <div fxLayout="column" class="messages-list" fxLayoutAlign="space-between">
+    <div #scrollMe (scroll)="scrolled($event)" class="old-message overflow-v">
+      <mat-list>
+        <mat-list-item class="message" [ngClass]="{'right':message.sender==me._id}"
+          *ngFor="let message of conversationMessages?.messages">
+          <div *ngIf="message.sender==me._id" class="outer-badge">
+            <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
+              alt="...">
+          </div>
+          <div matListAvatar *ngIf="message.sender!=me._id" class="outer-badge">
+            <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
+              alt="...">
+          </div>
+          <h3 class="username" matLine> {{other[message.sender]?.username}} </h3>
+          <p matLine>
+            <span class="message-text" [innerHtml]="this.getFormatText(message.messageText)">
+            </span>
+          </p>
+        </mat-list-item>
+      </mat-list>
+    </div>
     <div *ngIf="typingText" fxLayout="row" class="typing">
       <span>{{typingText}}</span>
       <span>
