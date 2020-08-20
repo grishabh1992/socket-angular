@@ -20,7 +20,7 @@ export interface Conversation {
   _id?: string;
   isGroup?: boolean;
   groupName?: string;
-  unread?: number;
+  unreadCount?: number;
 }
 
 export interface ConversationMessages extends Conversation {

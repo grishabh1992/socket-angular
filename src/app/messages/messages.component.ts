@@ -17,7 +17,7 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
   me: User;
   isTypingObservable;
   typingText = '';
-  keys = {};
+  keys: { [key: string]: boolean } = {};
   text: string;
   private isNearBottom = true;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
@@ -34,6 +34,7 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
         this.other[user._id] = user;
       });
       this.scrollToBottom();
+      this.socket.messageSeen(this.conversationMessages._id, new Date());
     }
   }
   get conversationMessages(): ConversationMessages {
@@ -55,18 +56,23 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
       if (message.conversation === this._conversationMessages._id) {
         this.conversationMessages.messages.push(message);
         this.text = '';
+        this.messageSeen();
       }
     });
     this.socket.typing((user: User) => {
       this.typing(user);
     });
-
   }
 
   ngAfterViewChecked() {
     this.itemElements.changes.subscribe(_ => this.onItemElementsChanged());
   }
 
+  private messageSeen() {
+    if (this.isNearBottom) {
+      this.socket.messageSeen(this.conversationMessages._id, new Date());
+    }
+  }
   private onItemElementsChanged(): void {
     if (this.isNearBottom) {
       this.scrollToBottom();
@@ -81,7 +87,11 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
   }
 
   scrolled(event: any): void {
-    this.isNearBottom = this.isUserNearBottom();
+    const nowAtBottom = this.isUserNearBottom();
+    if (nowAtBottom !== this.isNearBottom) {
+      this.isNearBottom = nowAtBottom;
+      this.messageSeen();
+    }
   }
 
   scrollToBottom(): void {
@@ -99,11 +109,11 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
   keyUp(event: KeyboardEvent) {
     if (event.key === 'Shift') {
       event.preventDefault();
-      this.keys['newline'] = false;
+      this.keys.newline = false;
       return false;
     } else if (event.key === 'Enter') {
       event.preventDefault();
-      if (this.keys['newline']) {
+      if (this.keys.newline) {
         this.text = this.text;
       } else {
         this.sendMessage();
@@ -111,11 +121,11 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
       return false;
     }
   }
-  keyDown(event) {
+  keyDown(event: KeyboardEvent) {
     this.socket.startTyping(this.conversationMessages._id);
     if (event.key === 'Shift') {
       event.preventDefault();
-      this.keys['newline'] = true;
+      this.keys.newline = true;
       return false;
     }
   }

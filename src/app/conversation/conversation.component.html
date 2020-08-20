@@ -19,7 +19,7 @@
         </div>
           <h3 matLine >
             {{!conversation.isGroup ? getReceipt(conversation)?.username : conversation.groupName}} </h3>
-            <span *ngIf="conversation.unread" class="badge">{{conversation.unread}}</span>
+            <span *ngIf="conversation.unreadCount" class="badge">{{conversation.unreadCount}}</span>
           <mat-divider class="conversation-divider"></mat-divider>
       </mat-list-item>
     </mat-list>

@@ -36,4 +36,8 @@ export class SocketService {
     this.socket.emit('typing', conversation);
   }
 
+  messageSeen(conversation: string, date: Date) {
+    this.socket.emit('seen', conversation, date)
+  }
+
 }
