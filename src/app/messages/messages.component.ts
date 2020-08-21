@@ -35,6 +35,7 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
       });
       this.scrollToBottom();
       this.socket.messageSeen(this.conversationMessages._id, new Date());
+      this.socket.activeConversation$.next({ conversation: this.conversationMessages, event: 'seen' });
     }
   }
   get conversationMessages(): ConversationMessages {
@@ -59,8 +60,10 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
         this.messageSeen();
       }
     });
-    this.socket.typing((user: User) => {
-      this.typing(user);
+    this.socket.typing((conversation: string, user: User) => {
+      if (this.conversationMessages._id === conversation) {
+        this.typing(user);
+      }
     });
   }
 
@@ -71,6 +74,7 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
   private messageSeen() {
     if (this.isNearBottom) {
       this.socket.messageSeen(this.conversationMessages._id, new Date());
+      this.socket.activeConversation$.next({ conversation: this.conversationMessages, event: 'seen' });
     }
   }
   private onItemElementsChanged(): void {
@@ -159,6 +163,7 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
 
   logout() {
     this.storage.clearAll();
+    this.socket.disconnect();
     this.router.navigate(['/']);
   }
 

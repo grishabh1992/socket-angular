@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { SocketService } from '../services/socket.service';
-import { Conversation, User, Message } from '../model';
+import { Conversation, User, Message, ActiveConversationEvent } from '../model';
 import { StorageService } from '../services/storage.service';
 
 @Component({
@@ -13,9 +13,10 @@ export class ConversationComponent implements OnInit {
   @Input()
   set conversations(conversation: Conversation[]) {
     if (conversation && conversation.length) {
-      console.log(conversation);
       this._conversations = conversation;
-      this.change(0, conversation[0]);
+      if (this.activeIndex === -1) {
+        this.change(0, conversation[0]);
+      }
     }
   }
   get conversations(): Conversation[] {
@@ -23,22 +24,27 @@ export class ConversationComponent implements OnInit {
   }
   @Output() action = new EventEmitter();
   @Output() select = new EventEmitter();
-  activeIndex = 0;
+  activeIndex = -1;
   activeConversation: Conversation;
+  me;
   constructor(private socketService: SocketService,
-    private storage: StorageService) { }
+    private storage: StorageService) {
+    this.me = this.storage.getLoggedUser()
+  }
 
   ngOnInit() {
-    // this.socketService.receiveMessage((message: Message) => {
-    //   if (message.conversation !== this.activeConversation._id) {
-    //     this.conversations = this.conversations.map((conversation) => {
-    //       if (conversation._id === message.conversation) {
-    //         conversation.unread  = conversation.unread ? conversation.unread++ : 1;
-    //       }
-    //       return conversation;
-    //     })
-    //   }
-    // });
+    this.socketService.activeConversation$.subscribe((event: ActiveConversationEvent) => {
+      this.conversations[this.activeIndex] = { ...event.conversation, unreadCount: 0 };
+    });
+    this.socketService.receiveUnseenMessage((newMessage: Message) => {
+      console.log('Receive Unseen', newMessage);
+      this.conversations = this.conversations.map((conversation: Conversation) => {
+        if (conversation._id === newMessage.conversation) {
+          conversation.unreadCount++;
+        }
+        return conversation;
+      });
+    })
   }
 
   add() {
@@ -53,8 +59,7 @@ export class ConversationComponent implements OnInit {
   }
 
   getReceipt(conversation: Conversation) {
-    const me = this.storage.getLoggedUser();
-    const member: User[] = (conversation.members as User[]).filter((user: User) => user._id !== me._id);
+    const member: User[] = (conversation.members as User[]).filter((user: User) => user._id !== this.me._id);
     return member.length ? member[0] : {};
   }
 

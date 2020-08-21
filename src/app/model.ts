@@ -26,3 +26,8 @@ export interface Conversation {
 export interface ConversationMessages extends Conversation {
   messages: Message[]
 }
+
+export interface ActiveConversationEvent {
+  conversation: Conversation,
+  event: string;
+}
