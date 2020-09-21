@@ -14,11 +14,14 @@
       <mat-list-item class="conversation" (click)="change(i,conversation)" [ngClass]="{'active' : activeIndex==i}"
         *ngFor="let conversation of conversations; let i = index">
         <div class="outer-badge" matListAvatar>
+          <div></div>
           <img class="inner-badge" matListAvatar
             [src]="conversation.isGroup ? '../../assets/images/group.jpg' : '../../assets/images/user.png'" alt="...">
         </div>
-          <h3 matLine >
+          <h3 matLine class="name">
+            <div *ngIf="getReceipt(conversation).sockets?.length" class="online"></div>
             {{!conversation.isGroup ? getReceipt(conversation)?.username : conversation.groupName}} </h3>
+            <div mat-line>{{conversation?.lastMessage?.messageText}}</div>
             <span *ngIf="conversation.unreadCount" class="badge">{{conversation.unreadCount}}</span>
           <mat-divider class="conversation-divider"></mat-divider>
       </mat-list-item>

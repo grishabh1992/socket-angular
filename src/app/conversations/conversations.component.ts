@@ -5,11 +5,15 @@ import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-conversation',
-  templateUrl: './conversation.component.html',
-  styleUrls: ['./conversation.component.scss']
+  templateUrl: './conversations.component.html',
+  styleUrls: ['./conversations.component.scss']
 })
 export class ConversationComponent implements OnInit {
   private _conversations: Conversation[];
+  activeIndex = -1;
+  activeConversation: Conversation;
+  me: User;
+  receipt: User;
   @Input()
   set conversations(conversation: Conversation[]) {
     if (conversation && conversation.length) {
@@ -24,9 +28,7 @@ export class ConversationComponent implements OnInit {
   }
   @Output() action = new EventEmitter();
   @Output() select = new EventEmitter();
-  activeIndex = -1;
-  activeConversation: Conversation;
-  me;
+
   constructor(private socketService: SocketService,
     private storage: StorageService) {
     this.me = this.storage.getLoggedUser()
@@ -37,7 +39,6 @@ export class ConversationComponent implements OnInit {
       this.conversations[this.activeIndex] = { ...event.conversation, unreadCount: 0 };
     });
     this.socketService.receiveUnseenMessage((newMessage: Message) => {
-      console.log('Receive Unseen', newMessage);
       this.conversations = this.conversations.map((conversation: Conversation) => {
         if (conversation._id === newMessage.conversation) {
           conversation.unreadCount++;
@@ -53,9 +54,9 @@ export class ConversationComponent implements OnInit {
 
   change(index: number, conversation: Conversation) {
     this.activeIndex = index;
-    this.activeConversation = conversation;
+    this.activeConversation = {...conversation};
     this.socketService.joinRoom(conversation._id);
-    this.select.emit(conversation);
+    this.select.emit({...conversation});
   }
 
   getReceipt(conversation: Conversation) {

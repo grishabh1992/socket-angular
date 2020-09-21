@@ -1,0 +1,11 @@
+<div class="group-container">
+  <mat-toolbar>
+    <div class="timeline-badge" [class.skeleton]="isLoading">{{ headerText }}</div>
+  </mat-toolbar>
+  <div class="timeline-content-panel" [class.last-group]="lastGroup">
+    <ng-content>
+      <!-- make sure that the background of your content is transparent
+      if you want to see the timelines vertical line between the items -->
+    </ng-content>
+  </div>
+</div>

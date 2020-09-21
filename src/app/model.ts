@@ -3,6 +3,7 @@ export interface User {
   gender?: string;
   _id?: string;
   profile?: string;
+  sockets?: string;
 }
 
 export interface Message {
@@ -21,6 +22,7 @@ export interface Conversation {
   isGroup?: boolean;
   groupName?: string;
   unreadCount?: number;
+  lastMessage?: Message;
 }
 
 export interface ConversationMessages extends Conversation {

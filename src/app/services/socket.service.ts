@@ -15,9 +15,12 @@ export class SocketService {
   }
 
   connect() {
-    this.socket = io('http://localhost:3001', {
-      query: { token: this.storage.getLoggedUser().token }
-    });
+    const token = this.storage.getLoggedUser().token;
+    if (token) {
+      this.socket = io('http://localhost:3001', {
+        query: { token  }
+      });
+    }
   }
 
 

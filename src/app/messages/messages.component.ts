@@ -20,6 +20,8 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
   keys: { [key: string]: boolean } = {};
   text: string;
   private isNearBottom = true;
+  groupedMessages = {};
+
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   @ViewChildren('message') itemElements: QueryList<any>;
   @Input()
@@ -35,7 +37,13 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
       });
       this.scrollToBottom();
       this.socket.messageSeen(this.conversationMessages._id, new Date());
-      this.socket.activeConversation$.next({ conversation: this.conversationMessages, event: 'seen' });
+      this.socket.activeConversation$.next({
+        conversation: {
+          ...this.conversationMessages,
+          lastMessage: this._conversationMessages.messages[this._conversationMessages.messages.length - 1],
+        }, event: 'seen'
+      });
+      this.groupMessage();
     }
   }
   get conversationMessages(): ConversationMessages {
@@ -56,6 +64,7 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
       }
       if (message.conversation === this._conversationMessages._id) {
         this.conversationMessages.messages.push(message);
+        this.groupMessage();
         this.text = '';
         this.messageSeen();
       }
@@ -67,6 +76,18 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  groupMessage() {
+    this.groupedMessages = this.conversationMessages.messages.reduce((groupedMessage, currentValue)=> {
+      const createdDate = new Date(currentValue.createdAt);
+      const key = `${createdDate.getDate()}-${createdDate.getMonth()}-${createdDate.getFullYear()}`;
+      if(!groupedMessage[key]){
+        groupedMessage[key] = [];
+      }
+      groupedMessage[key].push(currentValue);
+      return groupedMessage;
+    }, {});
+  }
+
   ngAfterViewChecked() {
     this.itemElements.changes.subscribe(_ => this.onItemElementsChanged());
   }
@@ -74,7 +95,12 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
   private messageSeen() {
     if (this.isNearBottom) {
       this.socket.messageSeen(this.conversationMessages._id, new Date());
-      this.socket.activeConversation$.next({ conversation: this.conversationMessages, event: 'seen' });
+      this.socket.activeConversation$.next({
+        conversation: {
+          ...this.conversationMessages
+          , lastMessage: this._conversationMessages.messages[this._conversationMessages.messages.length - 1],
+        }, event: 'seen'
+      });
     }
   }
   private onItemElementsChanged(): void {

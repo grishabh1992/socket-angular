@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './materila.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsersComponent } from './users/users.component';
-import { ConversationComponent } from './conversation/conversation.component';
 import { MessagesComponent } from './messages/messages.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SocketService } from './services/socket.service';
@@ -18,6 +17,8 @@ import { StorageService } from './services/storage.service';
 import { RequestInterceptor } from './services/request.interceptor';
 import { ResponseInterceptor } from './services/response.interceptor';
 import { TypingIndicatorComponent } from './typing-indicator/typing-indicator.component';
+import { TimelineComponent } from './timeline/timeline.component';
+import { ConversationComponent } from './conversations/conversations.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { TypingIndicatorComponent } from './typing-indicator/typing-indicator.co
     ConversationComponent,
     MessagesComponent,
     TypingIndicatorComponent,
+    TimelineComponent,
   ],
   imports: [
     BrowserModule,

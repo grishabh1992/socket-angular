@@ -1,9 +1,9 @@
 <div class="messages" fxLayout="column" fxLayoutAlign="space-between stretch">
   <div>
     <mat-toolbar class="side-header">
-      <div *ngIf="!conversationMessages?.isGroup"class="outer-badge">
-        <img class="inner-badge user-image"
-          [src]="receipent?.profile ? me?.profile : '../../assets/images/user.png'" alt="...">
+      <div *ngIf="!conversationMessages?.isGroup" class="outer-badge">
+        <img class="inner-badge user-image" [src]="receipent?.profile ? me?.profile : '../../assets/images/user.png'"
+          alt="...">
       </div>
       <span>{{conversationMessages?.isGroup ? conversationMessages.groupName : receipent?.username}}</span>
       <span class="example-spacer"></span>
@@ -16,22 +16,42 @@
   <div fxLayout="column" class="messages-list" fxLayoutAlign="space-between">
     <div #scrollMe (scroll)="scrolled($event)" class="old-message overflow-v">
       <mat-list>
-        <mat-list-item class="message" [ngClass]="{'right':message.sender==me._id}"
-          *ngFor="let message of conversationMessages?.messages">
-          <div *ngIf="message.sender==me._id" class="outer-badge">
-            <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
-              alt="...">
-          </div>
-          <div matListAvatar *ngIf="message.sender!=me._id" class="outer-badge">
-            <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
-              alt="...">
-          </div>
-          <h3 class="username" matLine> {{other[message.sender]?.username}} </h3>
-          <p matLine>
-            <span class="message-text" [innerHtml]="this.getFormatText(message.messageText)">
-            </span>
-          </p>
-        </mat-list-item>
+        <!-- <app-timeline *ngFor="let message of conversationMessages?.messages" [headerText]="message.createdAt|date">
+          <mat-list-item class="message" [ngClass]="{'right':message.sender==me._id}">
+            <div *ngIf="message.sender==me._id" class="outer-badge">
+              <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
+                alt="...">
+            </div>
+            <div matListAvatar *ngIf="message.sender!=me._id" class="outer-badge">
+              <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
+                alt="...">
+            </div>
+            <h3 class="username" matLine> {{other[message.sender]?.username}} </h3>
+            <p matLine>
+              <span class="message-text" [innerHtml]="this.getFormatText(message.messageText)">
+              </span>
+            </p>
+          </mat-list-item>
+        </app-timeline>-->
+        <app-timeline *ngFor="let gorupMessage of groupedMessages| keyvalue" [headerText]="gorupMessage.key">
+          <mat-list-item *ngFor="let message of gorupMessage.value" class="message"
+            [ngClass]="{'right':message.sender==me._id}">
+            <div *ngIf="message.sender==me._id" class="outer-badge">
+              <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
+                alt="...">
+            </div>
+            <div matListAvatar *ngIf="message.sender!=me._id" class="outer-badge">
+              <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
+                alt="...">
+            </div>
+            <h3 class="username" matLine> {{other[message.sender]?.username}} </h3>
+            <p matLine>
+              <span class="message-text" [innerHtml]="this.getFormatText(message.messageText)">
+              </span>
+            </p>
+          </mat-list-item>
+        </app-timeline>
+
       </mat-list>
     </div>
     <div *ngIf="typingText" fxLayout="row" class="typing">
