@@ -67,6 +67,7 @@
           <textarea (keyup)="keyUp($event)" (keydown)="keyDown($event)" [(ngModel)]="text" (submit)="sendMessage()"
             matInput placeholder="Message"></textarea>
         </mat-form-field>
+        <app-speech-to-text (processedText)="setMessage($event)"></app-speech-to-text>
         <button mat-icon-button aria-label="Example icon-button with share icon">
           <mat-icon (click)="sendMessage()">send</mat-icon>
         </button>

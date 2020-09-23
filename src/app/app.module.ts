@@ -19,6 +19,8 @@ import { ResponseInterceptor } from './services/response.interceptor';
 import { TypingIndicatorComponent } from './typing-indicator/typing-indicator.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { ConversationComponent } from './conversations/conversations.component';
+import { SpeechToTextComponent } from './speech-to-text/speech-to-text.component';
+import { VoiceRecognitionService } from './services/voice.recognition.service';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { ConversationComponent } from './conversations/conversations.component';
     MessagesComponent,
     TypingIndicatorComponent,
     TimelineComponent,
+    SpeechToTextComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,7 @@ import { ConversationComponent } from './conversations/conversations.component';
     SocketService,
     APIService,
     StorageService,
+    VoiceRecognitionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptor,

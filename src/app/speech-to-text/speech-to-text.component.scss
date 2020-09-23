@@ -1,0 +1,37 @@
+@import "../../assets/styles/variables";
+
+.listening {
+  .icon {
+    position: absolute;
+    margin: 0.75rem;
+  }
+  .circle {
+    background-color: transparent;
+    border: 4px solid $user-badge-outer-border;
+    opacity: 0.9;
+    border-left: 4px solid transparent;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    -moz-animation: spinoffPulse 2s infinite linear;
+    -webkit-animation: spinoffPulse 2s infinite linear;
+  }
+}
+
+@-moz-keyframes spinoffPulse {
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spinoffPulse {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}

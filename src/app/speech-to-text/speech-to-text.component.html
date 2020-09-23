@@ -1,0 +1,7 @@
+<button mat-icon-button *ngIf="!isRunning" (click)="startMic()">
+  <mat-icon (click)="startMic()">mic_off</mat-icon>
+</button>
+<div *ngIf="isRunning" class="listening">
+  <mat-icon class="icon" (click)="startMic()">mic</mat-icon>
+  <div class="circle"> </div>
+</div>

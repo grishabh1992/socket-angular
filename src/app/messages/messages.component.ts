@@ -76,6 +76,10 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  setMessage(text: string) {
+    this.text = text;
+  }
+
   groupMessage() {
     this.groupedMessages = this.conversationMessages.messages.reduce((groupedMessage, currentValue)=> {
       const createdDate = new Date(currentValue.createdAt);
