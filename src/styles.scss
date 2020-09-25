@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 // @import '~@angular/material/theming';
 // @import "./assets/styles/theme.scss";
-
+@import './assets/styles/variables';
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -12,3 +12,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   overflow: auto;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $scroll-bar;
+  border-radius: 8px;
+}

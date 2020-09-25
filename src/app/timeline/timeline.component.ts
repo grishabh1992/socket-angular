@@ -8,7 +8,6 @@ import { Component, Input } from '@angular/core';
 export class TimelineComponent {
 
   @Input() headerText: string;
-  @Input() isLoading = true;
   @Input() lastGroup = false;
 
   constructor() { }

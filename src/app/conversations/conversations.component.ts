@@ -2,7 +2,8 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { SocketService } from '../services/socket.service';
 import { Conversation, User, Message, ActiveConversationEvent } from '../model';
 import { StorageService } from '../services/storage.service';
-
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+@UntilDestroy()
 @Component({
   selector: 'app-conversation',
   templateUrl: './conversations.component.html',
@@ -35,7 +36,7 @@ export class ConversationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.socketService.activeConversation$.subscribe((event: ActiveConversationEvent) => {
+    this.socketService.activeConversation$.pipe(untilDestroyed(this)).subscribe((event: ActiveConversationEvent) => {
       this.conversations[this.activeIndex] = { ...event.conversation, unreadCount: 0 };
     });
     this.socketService.receiveUnseenMessage((newMessage: Message) => {

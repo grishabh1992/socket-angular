@@ -1,10 +1,11 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewChecked, ChangeDetectionStrategy, ViewChildren, QueryList } from '@angular/core';
 import { ConversationMessages, User, Message } from '../model';
 import { APIService } from '../services/api.service';
 import { StorageService } from '../services/storage.service';
 import { Router } from '@angular/router';
 import { SocketService } from '../services/socket.service';
-
+@UntilDestroy()
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
@@ -93,7 +94,14 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    this.itemElements.changes.subscribe(_ => this.onItemElementsChanged());
+    this.itemElements.changes.pipe(untilDestroyed(this)).pipe(untilDestroyed(this)).subscribe(_ => this.onItemElementsChanged());
+  }
+
+  getSeenUser(usersId : string[]) {
+    const text = (usersId|| []).map((id)=> {
+      return this.other[id].username;
+    }).join(', ');
+    return text.length ? `seen by ${text}`: '';
   }
 
   private messageSeen() {

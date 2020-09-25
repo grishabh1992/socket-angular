@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from '../services/api.service';
 import { Conversation, ConversationMessages } from '../model';
-
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+@UntilDestroy()
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -19,20 +20,20 @@ export class DashboardComponent implements OnInit {
   }
 
   getConversations() {
-    this.api.conversations({ params: { ref: JSON.stringify(['members']) } }).subscribe((reponse: any) => {
+    this.api.conversations({ params: { ref: JSON.stringify(['members']) } }).pipe(untilDestroyed(this)).subscribe((reponse: any) => {
       this.conversations = reponse.data;
     });
 
   }
 
   async startNewConversation(conversation: Conversation) {
-    this.api.initiateConversation({ body: conversation }).subscribe();
+    this.api.initiateConversation({ body: conversation }).pipe(untilDestroyed(this)).subscribe();
     this.isNewConversation = false;
     this.getConversations();
   }
 
   async startConversation(conversation: Conversation) {
-    this.api.messages({ params: conversation }).subscribe((response: any) => {
+    this.api.messages({ params: conversation }).pipe(untilDestroyed(this)).subscribe((response: any) => {
       console.log(response);
       this.conversationMessages = response.data[0];
     });

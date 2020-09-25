@@ -18,14 +18,16 @@ export class SocketService {
     const token = this.storage.getLoggedUser().token;
     if (token) {
       this.socket = io('http://localhost:3001', {
-        query: { token  }
+        query: { token }
       });
     }
   }
 
 
   disconnect() {
-    this.socket.disconnect();
+    if (this.socket) {
+      this.socket.disconnect();
+    }
     this.socket = null;
   }
 

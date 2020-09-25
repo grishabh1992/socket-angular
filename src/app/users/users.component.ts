@@ -2,7 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { APIService } from '../services/api.service';
 import { Conversation, User } from '../model';
 import { MatListOption } from '@angular/material/list';
-
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+@UntilDestroy()
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -19,7 +20,7 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.api.listUsers({}).subscribe((userPayload: any) => {
+    this.api.listUsers({}).pipe(untilDestroyed(this)).subscribe((userPayload: any) => {
       this.users = userPayload.data;
     })
   }

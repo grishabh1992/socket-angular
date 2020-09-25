@@ -16,23 +16,6 @@
   <div fxLayout="column" class="messages-list" fxLayoutAlign="space-between">
     <div #scrollMe (scroll)="scrolled($event)" class="old-message overflow-v">
       <mat-list>
-        <!-- <app-timeline *ngFor="let message of conversationMessages?.messages" [headerText]="message.createdAt|date">
-          <mat-list-item class="message" [ngClass]="{'right':message.sender==me._id}">
-            <div *ngIf="message.sender==me._id" class="outer-badge">
-              <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
-                alt="...">
-            </div>
-            <div matListAvatar *ngIf="message.sender!=me._id" class="outer-badge">
-              <img class="inner-badge" matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'"
-                alt="...">
-            </div>
-            <h3 class="username" matLine> {{other[message.sender]?.username}} </h3>
-            <p matLine>
-              <span class="message-text" [innerHtml]="this.getFormatText(message.messageText)">
-              </span>
-            </p>
-          </mat-list-item>
-        </app-timeline>-->
         <app-timeline *ngFor="let gorupMessage of groupedMessages| keyvalue" [headerText]="gorupMessage.key">
           <mat-list-item *ngFor="let message of gorupMessage.value" class="message"
             [ngClass]="{'right':message.sender==me._id}">
@@ -49,6 +32,9 @@
               <span class="message-text" [innerHtml]="this.getFormatText(message.messageText)">
               </span>
             </p>
+            <p matLine class="seen" *ngIf="message.sender===me._id">
+              {{conversationMessages?.isGroup ? getSeenUser(message.seen) : 'seen'}}
+              </p>
           </mat-list-item>
         </app-timeline>
 

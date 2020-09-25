@@ -7,38 +7,28 @@
 
   mat-toolbar {
     position: sticky;
-    top: 0rem; // needed for sticky toolbar
+    top: 0rem;
     z-index: 999;
     height: 1.5rem;
     background-color: transparent !important;
   }
 
-  .timeline-badge {
-    height: 1.5rem;
+  .badge {
     border-radius: 0.5rem;
-    font: inherit;
-    padding-top: 0.125rem;
     padding-left: 0.5rem;
-    padding-bottom: 0.125rem;
     padding-right: 0.5rem;
     margin: 0 auto;
-
-    /* Subtitel2 14 medium */
-    font-family: Noto Sans;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.1875rem;
-    /* identical to box height */
-    text-align: center;
-    color: $border;
+   // line-height: 1.125rem;
     background: $background-dark;
     border: solid 3px $user-badge-outer-border;
+    border-radius: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 1rem;
   }
 
-  .timeline-content-panel {
+  .content-panel {
     position: relative;
-    font: inherit;
     padding-top: 0.5rem;
     padding-bottom: 1rem;
     margin: 0 auto;

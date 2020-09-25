@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { VoiceRecognitionService } from '../services/voice.recognition.service';
-
+@UntilDestroy()
 @Component({
   selector: 'app-speech-to-text',
   templateUrl: './speech-to-text.component.html',
@@ -20,7 +21,7 @@ export class SpeechToTextComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.voiceRecognitionService.words$.subscribe((data)=> {
+    this.voiceRecognitionService.words$.pipe(untilDestroyed(this)).subscribe((data)=> {
       this.isRunning = false;
       this.processedText.emit(data);
     });
