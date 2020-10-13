@@ -7,6 +7,11 @@
       </div>
       <span>{{conversationMessages?.isGroup ? conversationMessages.groupName : receipent?.username}}</span>
       <span class="example-spacer"></span>
+      <!-- <button  aria-label="Example icon-button with share icon"> -->
+      <a (click)="startVideoCall()" mat-icon-button>
+        <mat-icon>video_call</mat-icon>
+      </a>
+      <!-- </button> -->
       <button mat-icon-button aria-label="Example icon-button with share icon">
         <mat-icon (click)="logout()">exit_to_app</mat-icon>
       </button>
@@ -34,7 +39,7 @@
             </p>
             <p matLine class="seen" *ngIf="message.sender===me._id">
               {{conversationMessages?.isGroup ? getSeenUser(message.seen) : 'seen'}}
-              </p>
+            </p>
           </mat-list-item>
         </app-timeline>
 

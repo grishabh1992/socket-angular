@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Install Angular</h2>
+<mat-dialog-content class="mat-typography">
+
+  <div class="container">
+    <div class="content-container">
+      <div class="active-users-panel" id="active-user-container">
+        <h3 class="panel-title">Active Users:</h3>
+      </div>
+      <div class="video-chat-container">
+        <h2 class="talk-info" id="talking-with-info">
+          Select active user on the left menu.
+          <button (click)="start()">Start</button>
+          <button (click)="toggleAudio()">Mute</button>
+          <button (click)="toggleVideo()">Video</button>
+        </h2>
+        <div class="video-container">
+          <video autoplay class="remote-video" #remoteVideo></video>
+          <div class="local-video">
+            <video class="local-video" #video autoplay muted>
+            </video>
+            <div *ngIf="!isVideo">
+              Offf
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+</mat-dialog-actions>

@@ -14,6 +14,10 @@ export class SocketService {
     this.connect();
   }
 
+  getSocket(): SocketIOClient.Socket {
+    return this.socket;
+  }
+
   connect() {
     const token = this.storage.getLoggedUser().token;
     if (token) {
@@ -57,5 +61,25 @@ export class SocketService {
 
   messageSeen(conversation: string, date: Date) {
     this.socket.emit('seen', conversation, date)
+  }
+
+  startVideoCall(conversation: Conversation, offer, receipent) {
+    this.socket.emit('initiate-video', { conversation, offer, receipent });
+  }
+
+  reInitiateVideoCall(conversation: Conversation, offer, socket) {
+    this.socket.emit('reinitiate-video', { conversation, offer, socket });
+  }
+
+  videoInvitation(callback) {
+    this.socket.on('made-request', callback);
+  }
+
+  acceptVideoCall(conversation: Conversation, answer, socket) {
+    this.socket.emit('call-video-accept', { conversation, answer, socket });
+  }
+
+  acceptedVideoCall(callback) {
+    this.socket.on('call-video-accepted', callback);
   }
 }

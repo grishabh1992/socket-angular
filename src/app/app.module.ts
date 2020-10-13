@@ -21,6 +21,8 @@ import { TimelineComponent } from './timeline/timeline.component';
 import { ConversationComponent } from './conversations/conversations.component';
 import { SpeechToTextComponent } from './speech-to-text/speech-to-text.component';
 import { VoiceRecognitionService } from './services/voice.recognition.service';
+import { VideoComponent } from './video/video.component';
+import { VideoService } from './services/video.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { VoiceRecognitionService } from './services/voice.recognition.service';
     TypingIndicatorComponent,
     TimelineComponent,
     SpeechToTextComponent,
+    VideoComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { VoiceRecognitionService } from './services/voice.recognition.service';
     APIService,
     StorageService,
     VoiceRecognitionService,
+    VideoService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptor,

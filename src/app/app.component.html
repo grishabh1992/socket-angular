@@ -1,5 +1,11 @@
-
 <div class="bg-image"></div>
 <div class="main-wrapper">
   <router-outlet></router-outlet>
+  <div class="video-invitation" *ngIf="showAcceptDialog">
+    <div>You have video all request</div>
+    <div class="action">
+      <button (click)="acceptVideo()" mat-button>Accept</button>
+      <button mat-button>Reject</button>
+    </div>
+  </div>
 </div>

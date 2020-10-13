@@ -6,7 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDialogModule } from '@angular/material/dialog';
 import { from } from 'rxjs';
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { from } from 'rxjs';
     MatListModule,
     MatToolbarModule,
     MatBadgeModule,
+    MatDialogModule,
   ],
   exports: [
     MatFormFieldModule,
@@ -28,6 +30,7 @@ import { from } from 'rxjs';
     MatToolbarModule,
     MatListModule,
     MatBadgeModule,
+    MatDialogModule,
   ]
 })
 export class MaterialModule { }

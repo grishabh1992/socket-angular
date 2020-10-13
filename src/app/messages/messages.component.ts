@@ -1,10 +1,15 @@
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewChecked, ChangeDetectionStrategy, ViewChildren, QueryList } from '@angular/core';
 import { ConversationMessages, User, Message } from '../model';
 import { APIService } from '../services/api.service';
 import { StorageService } from '../services/storage.service';
 import { Router } from '@angular/router';
 import { SocketService } from '../services/socket.service';
+import { VideoComponent } from '../video/video.component';
+import { VideoService } from '../services/video.service';
+
+const { RTCPeerConnection, RTCSessionDescription } = window;
 @UntilDestroy()
 @Component({
   selector: 'app-messages',
@@ -53,8 +58,10 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
 
 
   constructor(private api: APIService,
+    public dialog: MatDialog,
     private router: Router,
     private socket: SocketService,
+    private videoService: VideoService,
     private storage: StorageService) { }
 
   ngOnInit() {
@@ -82,10 +89,10 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
   }
 
   groupMessage() {
-    this.groupedMessages = this.conversationMessages.messages.reduce((groupedMessage, currentValue)=> {
+    this.groupedMessages = this.conversationMessages.messages.reduce((groupedMessage, currentValue) => {
       const createdDate = new Date(currentValue.createdAt);
       const key = `${createdDate.getDate()}-${createdDate.getMonth()}-${createdDate.getFullYear()}`;
-      if(!groupedMessage[key]){
+      if (!groupedMessage[key]) {
         groupedMessage[key] = [];
       }
       groupedMessage[key].push(currentValue);
@@ -97,11 +104,11 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
     this.itemElements.changes.pipe(untilDestroyed(this)).pipe(untilDestroyed(this)).subscribe(_ => this.onItemElementsChanged());
   }
 
-  getSeenUser(usersId : string[]) {
-    const text = (usersId|| []).map((id)=> {
+  getSeenUser(usersId: string[]) {
+    const text = (usersId || []).map((id) => {
       return this.other[id].username;
     }).join(', ');
-    return text.length ? `seen by ${text}`: '';
+    return text.length ? `seen by ${text}` : '';
   }
 
   private messageSeen() {
@@ -198,6 +205,23 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
       });
     }
   }
+
+  async startVideoCall() {
+    const conversation = { ...this.conversationMessages };
+    delete conversation.messages;
+    // this.videoService.startVideoCall({ conversation, receipent: this.receipent });
+    const dialogRef = this.dialog.open(VideoComponent,{
+      data: {
+        conversation,
+        receipent: this.receipent,
+        initiator : true
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
 
   logout() {
     this.storage.clearAll();
