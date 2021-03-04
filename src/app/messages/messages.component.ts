@@ -38,13 +38,15 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
       });
       this.scrollToBottom();
       this.socket.messageSeen(this.conversationMessages._id, new Date());
-      this.socket.activeConversation$.next({
-        conversation: {
-          ...this.conversationMessages,
-          lastMessage: this._conversationMessages.messages[this._conversationMessages.messages.length - 1],
-        }, event: 'seen'
-      });
-      this.groupMessage();
+      if(this._conversationMessages.messages){
+        this.socket.activeConversation$.next({
+          conversation: {
+            ...this.conversationMessages,
+            lastMessage: this._conversationMessages.messages[this._conversationMessages.messages.length - 1],
+          }, event: 'seen'
+        }); 
+        this.groupMessage();
+      }    
     }
   }
   get conversationMessages(): ConversationMessages {

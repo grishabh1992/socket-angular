@@ -34,30 +34,32 @@
             </p>
             <p matLine class="seen" *ngIf="message.sender===me._id">
               {{conversationMessages?.isGroup ? getSeenUser(message.seen) : 'seen'}}
-              </p>
+            </p>
           </mat-list-item>
         </app-timeline>
 
       </mat-list>
     </div>
-    <div *ngIf="typingText" fxLayout="row" class="typing">
-      <span>{{typingText}}</span>
-      <span>
-        <app-typing-indicator></app-typing-indicator>
-      </span>
+    <div>
+      <div *ngIf="typingText" fxLayout="row" class="typing">
+        <span>{{typingText}}</span>
+        <span>
+          <app-typing-indicator></app-typing-indicator>
+        </span>
+      </div>
+      <mat-list>
+        <mat-list-item class="comment">
+          <img matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'" alt="...">
+          <mat-form-field matLine class="example-full-width">
+            <textarea (keyup)="keyUp($event)" (keydown)="keyDown($event)" [(ngModel)]="text" (submit)="sendMessage()"
+              matInput placeholder="Message"></textarea>
+          </mat-form-field>
+          <app-speech-to-text (processedText)="setMessage($event)"></app-speech-to-text>
+          <button mat-icon-button aria-label="Example icon-button with share icon">
+            <mat-icon (click)="sendMessage()">send</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
     </div>
-    <mat-list>
-      <mat-list-item class="comment">
-        <img matListAvatar [src]="me?.profile ? me?.profile : '../../assets/images/user.png'" alt="...">
-        <mat-form-field matLine class="example-full-width">
-          <textarea (keyup)="keyUp($event)" (keydown)="keyDown($event)" [(ngModel)]="text" (submit)="sendMessage()"
-            matInput placeholder="Message"></textarea>
-        </mat-form-field>
-        <app-speech-to-text (processedText)="setMessage($event)"></app-speech-to-text>
-        <button mat-icon-button aria-label="Example icon-button with share icon">
-          <mat-icon (click)="sendMessage()">send</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
   </div>
 </div>

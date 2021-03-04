@@ -143,5 +143,8 @@
       }
     }
   },
-  "defaultProject": "angular-socket"
+  "defaultProject": "angular-socket",
+  "cli": {
+    "analytics": "84d5c39f-8894-4ee2-b4d2-0b3346c6a79d"
+  }
 }

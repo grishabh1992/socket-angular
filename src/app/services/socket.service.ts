@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
-import * as io from 'socket.io-client';
+// ES6 import or TypeScript
+import { io } from "socket.io-client";
 import { StorageService } from './storage.service';
 import { Message, Conversation, ActiveConversationEvent } from '../model';
 import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
-  private socket: SocketIOClient.Socket;
+  private socket;
   activeConversation$: Subject<ActiveConversationEvent> = new Subject<ActiveConversationEvent>();
   constructor(
     private storage: StorageService
