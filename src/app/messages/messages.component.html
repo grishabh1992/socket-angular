@@ -33,7 +33,7 @@
               </span>
             </p>
             <p matLine class="seen" *ngIf="message.sender===me._id">
-              {{conversationMessages?.isGroup ? getSeenUser(message.seen) : 'seen'}}
+              {{getSeenUser(message.seen)}}
             </p>
           </mat-list-item>
         </app-timeline>

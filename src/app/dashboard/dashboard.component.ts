@@ -34,7 +34,6 @@ export class DashboardComponent implements OnInit {
 
   async startConversation(conversation: Conversation) {
     this.api.messages({ params: conversation }).pipe(untilDestroyed(this)).subscribe((response: any) => {
-      console.log(response);
       this.conversationMessages = response.data[0];
     });
   }

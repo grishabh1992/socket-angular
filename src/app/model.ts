@@ -13,6 +13,7 @@ export interface Message {
   conversation?: Conversation | string;
   members?: User[] | string[];
   _id?: string;
+  seen?: string[];
 }
 
 export interface Conversation {

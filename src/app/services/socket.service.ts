@@ -44,8 +44,12 @@ export class SocketService {
     this.socket.on('message', callback);
   }
 
-  receiveUnseenMessage(callback) {
-    this.socket.on('unseen-message', callback);
+  receiveNewMessage(callback) {
+    this.socket.on('new-message-trigger', callback);
+  }
+
+  receiveSeenStatus(callback) {
+    this.socket.on('seen-trigger', callback);
   }
 
   typing(callback) {

@@ -30,37 +30,49 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
     if (conversation) {
       this._conversationMessages = conversation;
       this.me = this.storage.getLoggedUser();
-      this.receipent = (conversation.members as User[]).filter((user: User) => {
+      this.receipent = (conversation.members as User[]).find((user: User) => {
         return this.me._id !== user._id;
-      })[0];
+      });
+
+      // Iterate over members and create Map
       (conversation.members as User[]).forEach((user: User) => {
         this.other[user._id] = user;
       });
-      this.scrollToBottom();
-      this.socket.messageSeen(this.conversationMessages._id, new Date());
-      if(this._conversationMessages.messages){
+
+      if (this._conversationMessages.messages) {
+        // Once get data from API scroll to latest message
+        this.scrollToBottom();
+
+        //Trigger a event that user see all messages of this conversation
+        this.socket.messageSeen(this.conversationMessages._id, new Date());
+
+
         this.socket.activeConversation$.next({
           conversation: {
             ...this.conversationMessages,
             lastMessage: this._conversationMessages.messages[this._conversationMessages.messages.length - 1],
           }, event: 'seen'
-        }); 
-        this.groupMessage();
-      }    
+        });
+      } else {
+        this._conversationMessages.messages = [];
+      }
+      this.groupMessage();
     }
   }
   get conversationMessages(): ConversationMessages {
     return this._conversationMessages;
   }
 
-
-  constructor(private api: APIService,
+  constructor(
     private router: Router,
     private socket: SocketService,
-    private storage: StorageService) { }
+    private storage: StorageService
+  ) { }
 
   ngOnInit() {
+    //My information
     this.me = this.storage.getLoggedUser();
+
     this.socket.receiveMessage((message: Message) => {
       if (!this.conversationMessages.messages) {
         this.conversationMessages.messages = [];
@@ -72,9 +84,23 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
         this.messageSeen();
       }
     });
+
+    // Typing Indicator
     this.socket.typing((conversation: string, user: User) => {
       if (this.conversationMessages._id === conversation) {
         this.typing(user);
+      }
+    });
+
+    this.socket.receiveSeenStatus((userId: string) => {
+      if (userId !== this.me._id) {
+        let msgLength = this.conversationMessages.messages.length - 1;
+        let latestMessage = this.conversationMessages.messages[msgLength];
+        while (!latestMessage.seen.includes(userId)) {
+          this.conversationMessages.messages[msgLength].seen.push(userId);
+          msgLength--;
+          latestMessage = this.conversationMessages.messages[msgLength];
+        }
       }
     });
   }
@@ -83,11 +109,12 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
     this.text = text;
   }
 
+  // Group Message on Basis of date
   groupMessage() {
-    this.groupedMessages = this.conversationMessages.messages.reduce((groupedMessage, currentValue)=> {
+    this.groupedMessages = this.conversationMessages.messages.reduce((groupedMessage, currentValue) => {
       const createdDate = new Date(currentValue.createdAt);
       const key = `${createdDate.getDate()}-${createdDate.getMonth()}-${createdDate.getFullYear()}`;
-      if(!groupedMessage[key]){
+      if (!groupedMessage[key]) {
         groupedMessage[key] = [];
       }
       groupedMessage[key].push(currentValue);
@@ -99,16 +126,24 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
     this.itemElements.changes.pipe(untilDestroyed(this)).pipe(untilDestroyed(this)).subscribe(_ => this.onItemElementsChanged());
   }
 
-  getSeenUser(usersId : string[]) {
-    const text = (usersId|| []).map((id)=> {
-      return this.other[id].username;
-    }).join(', ');
-    return text.length ? `seen by ${text}`: '';
+  getSeenUser(usersIds: string[]) {
+    if (this.conversationMessages.isGroup) {
+      const text = (usersIds || []).map((id) => {
+        return this.other[id].username;
+      }).join(', ');
+      return text.length ? `seen by ${text}` : '';
+    } else {
+      if (usersIds.includes(this.receipent._id)) {
+        return 'seen'
+      }
+      return '';
+    }
   }
 
   private messageSeen() {
     if (this.isNearBottom) {
       this.socket.messageSeen(this.conversationMessages._id, new Date());
+
       this.socket.activeConversation$.next({
         conversation: {
           ...this.conversationMessages
@@ -198,6 +233,7 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
         conversation: this.conversationMessages._id,
         members: this.conversationMessages.members,
       });
+      this.text = '';
     }
   }
 
