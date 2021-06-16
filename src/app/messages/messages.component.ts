@@ -111,15 +111,30 @@ export class MessagesComponent implements OnInit, AfterViewChecked {
 
   // Group Message on Basis of date
   groupMessage() {
-    this.groupedMessages = this.conversationMessages.messages.reduce((groupedMessage, currentValue) => {
+    const unorderedMessage = this.conversationMessages.messages.reduce((groupedMessage, currentValue) => {
       const createdDate = new Date(currentValue.createdAt);
-      const key = `${createdDate.getDate()}-${createdDate.getMonth()}-${createdDate.getFullYear()}`;
+      const key = new Date(createdDate.getFullYear(), createdDate.getMonth(), createdDate.getDate(), 0, 0, 0).toISOString();
+
       if (!groupedMessage[key]) {
         groupedMessage[key] = [];
       }
       groupedMessage[key].push(currentValue);
       return groupedMessage;
     }, {});
+    this.groupedMessages = Object.keys(unorderedMessage)
+      .sort((a, b) => {
+        return new Date(a).getTime() - new Date(b).getTime()
+      })
+      .reduce(
+        (obj, key) => {
+          const createdDate = new Date(key);
+          const newKey = `${createdDate.getMonth() + 1}-${createdDate.getDate()}-${createdDate.getFullYear()}`;
+          obj[newKey] = unorderedMessage[key];
+          return obj;
+        },
+        {}
+      );
+
   }
 
   ngAfterViewChecked() {

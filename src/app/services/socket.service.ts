@@ -4,6 +4,7 @@ import { io } from "socket.io-client";
 import { StorageService } from './storage.service';
 import { Message, Conversation, ActiveConversationEvent } from '../model';
 import { Subject } from 'rxjs';
+import { environment } from "src/environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
@@ -18,7 +19,7 @@ export class SocketService {
   connect() {
     const token = this.storage.getLoggedUser().token;
     if (token) {
-      this.socket = io('http://localhost:3001', {
+      this.socket = io(environment.API, {
         query: { token }
       });
     }
